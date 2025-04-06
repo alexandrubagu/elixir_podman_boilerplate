@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  app:
+    image: test_app:latest
+    container_name: elixir_app
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: "ecto://postgres:password@db/elixir_db"
+      SECRET_KEY_BASE: "your_secret_key_base"
+      PHX_HOST: "yourdomain.com"
+      PORT: "4000"
+    depends_on:
+      - db
+
+  db:
+    image: docker.io/postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "elixir_db"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
